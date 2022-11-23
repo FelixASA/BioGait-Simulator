@@ -2,8 +2,8 @@ package com.example.biogait_simulator
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.biogait_simulator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -1,14 +1,20 @@
 package com.example.biogait_simulator
 import android.content.pm.ActivityInfo
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import com.example.biogait_simulator.Fragments.BarFragment
+import com.example.biogait_simulator.Fragments.ChallengeFragment
+import com.example.biogait_simulator.Fragments.SpeedFragment
+import com.example.biogait_simulator.Fragments.StatFragment
 import com.example.biogait_simulator.databinding.ActivitySimulatorBinding
 
 class SimulatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySimulatorBinding
+    private lateinit var viewModel: SimulatorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,5 +43,7 @@ class SimulatorActivity : AppCompatActivity() {
         transaction.add(R.id.FrameChallenge, newChallengeFragment )
         transaction.addToBackStack(null)
         transaction.commit()
+
+
     }
 }

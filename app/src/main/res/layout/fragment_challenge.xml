@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/frameLayout3"
-    tools:context=".ChallengeFragment">
+    tools:context=".Fragments.ChallengeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
