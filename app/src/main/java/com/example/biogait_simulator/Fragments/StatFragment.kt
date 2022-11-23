@@ -34,9 +34,10 @@ class StatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(SimulatorViewModel::class.java)
 
-        binding.btnPlay?.setOnClickListener(){
+        binding.btnPlay?.setOnClickListener{
             Toast.makeText(activity,"Iniciar", Toast.LENGTH_LONG).show()
-            viewModel.setVariabilidad(20.0)
+            viewModel.setVariability(20.0)
+            viewModel.setLastChange(3)
             Log.i("viewModel", "Hay cambio1")
         }
 
