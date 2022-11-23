@@ -8,7 +8,7 @@
     tools:context=".BarFragment" >
 
     <SeekBar
-        android:id="@+id/seekBar"
+        android:id="@+id/barVelocidad"
         android:layout_width="480dp"
         android:layout_height="31dp"
         android:layout_marginStart="52dp"
@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
-        android:id="@+id/seekBar2"
+        android:id="@+id/barAudio"
         android:layout_width="480dp"
         android:layout_height="31dp"
         android:layout_marginStart="28dp"
@@ -43,10 +43,10 @@
         android:valueFrom="0"
         android:valueTo="100"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+        app:layout_constraintTop_toBottomOf="@+id/barVelocidad" />
 
     <SeekBar
-        android:id="@+id/seekBar3"
+        android:id="@+id/barReto"
         android:layout_width="480dp"
         android:layout_height="31dp"
         android:layout_marginStart="40dp"
@@ -62,7 +62,7 @@
         android:valueFrom="0"
         android:valueTo="100"
         app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+        app:layout_constraintTop_toBottomOf="@+id/barAudio" />
 
     <TextView
         android:id="@+id/textView4"
@@ -106,7 +106,7 @@
         android:text="0.00"
         android:textColor="#000000"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/seekBar"
+        app:layout_constraintStart_toEndOf="@+id/barVelocidad"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -118,7 +118,7 @@
         android:text="0.00"
         android:textColor="#000000"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/seekBar2"
+        app:layout_constraintStart_toEndOf="@+id/barAudio"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
@@ -130,6 +130,6 @@
         android:text="0.00"
         android:textColor="#000000"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/seekBar3"
+        app:layout_constraintStart_toEndOf="@+id/barReto"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 </android.support.constraint.ConstraintLayout>

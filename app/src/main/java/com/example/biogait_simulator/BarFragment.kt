@@ -26,6 +26,9 @@ class BarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // Evita que el usuario pueda mover el seekBar
+        binding.barAudio?.setOnTouchListener{v, event-> true}
+        binding.barVelocidad?.setOnTouchListener{v, event-> true}
+        binding.barReto?.setOnTouchListener{v, event-> true}
     }
 }
