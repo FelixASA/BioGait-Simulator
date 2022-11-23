@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGait-Simulator/app/src/main/res/layout-land/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGait-Simulator/app/src/main/res/layout-land/activity_simulator.xml" value="0.18" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGait-Simulator/app/src/main/res/layout-land/fragment_bar.xml" value="0.33" />
         <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/audiothumb.xml" value="0.1005" />
         <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/border_green.xml" value="0.1695" />
         <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.1005" />

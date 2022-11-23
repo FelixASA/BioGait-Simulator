@@ -2,10 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SimulatorActivity"
-    style="@style/LinearLayout"
+    style="@style/Theme.BioGaitSimulator"
     android:background="#99CC00"
-    >
+    tools:context=".SimulatorActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,8 +19,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <FrameLayout
                     android:id="@+id/FrameStat"
@@ -61,8 +60,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <FrameLayout
                     android:id="@+id/FrameSpeed"
@@ -82,14 +81,13 @@
                     android:id="@+id/FrameChallenge"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="0.5"
                     android:background="@drawable/round_background_videogame"
-                    android:gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    >
+                    android:gravity="center">
 
                 </FrameLayout>
             </LinearLayout>
