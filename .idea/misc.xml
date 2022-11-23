@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/audiothumb.xml" value="0.1005" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/border_green.xml" value="0.1695" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.1005" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.1005" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/round_background_videogame.xml" value="0.1655" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/drawable/round_button.xml" value="0.1005" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout-land/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout-land/activity_simulator.xml" value="0.22" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout-land/fragment_bar.xml" value="0.22" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout-land/fragment_challenge.xml" value="0.22" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout-land/fragment_speed.xml" value="0.25" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout-land/fragment_stat.xml" value="0.25" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout/activity_simulator.xml" value="0.15625" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout/fragment_bar.xml" value="0.1" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout/fragment_challenge.xml" value="0.1" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout/fragment_speed.xml" value="0.1" />
+        <entry key="..\:/Users/Zhou/OneDrive/Escritorio/BioGaitSimulator/app/src/main/res/layout/fragment_stat.xml" value="0.16259057971014493" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
