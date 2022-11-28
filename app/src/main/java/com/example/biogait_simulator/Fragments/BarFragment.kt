@@ -19,6 +19,8 @@ class BarFragment : Fragment() {
 
     private var _binding: FragmentBarBinding? = null
     private val binding get()= _binding!!
+    private var variability: Double = 0.00
+    private var lastChange: Int = 0 // Ultimo cambio :: 1 = velocidad, 2 = reto, 3 = audio
 
     private lateinit var viewModel: SimulatorViewModel
 
@@ -42,23 +44,32 @@ class BarFragment : Fragment() {
         binding.barVelocidad?.setOnTouchListener{v, event-> true}
         binding.barReto?.setOnTouchListener{v, event-> true}
 
+        //  Establecer valor
+        binding.vVelocidad?.text = getString(R.string.vVariability,variability)
+        binding.vAudio?.text = getString(R.string.vVariability,variability)
+        binding.vReto?.text = getString(R.string.vVariability,variability)
+
         viewModel = ViewModelProvider(requireActivity()).get(SimulatorViewModel::class.java)
 
-        //  Ultimos cambios
+        //  Ultimos cambios, dar color a las barras
         viewModel.lastChange.observe(viewLifecycleOwner, Observer{lc ->
+            lastChange = lc //   Asignamos para utilizarlo en el otro case
             when (lc){
                 1 -> {
-                    //binding.barVelocidad?.background = resources.getDrawable(R.drawable.barrascolor)
                     binding.barVelocidad?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrascolor)
-                    Log.i("viewModel", "Hay cambio2")
+                    binding.barReto?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrasbw)
+                    binding.barAudio?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrasbw)
+
                 } // velocidad
                 2 -> {
-                    binding.barVelocidad?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrascolor)
-                    Log.i("viewModel", "Hay cambio3")
+                    binding.barVelocidad?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrasbw)
+                    binding.barReto?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrascolor)
+                    binding.barAudio?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrasbw)
                 }// reto
                 3 -> {
-                    binding.barVelocidad?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrascolor)
-                    Log.i("viewModel", "Hay cambio4")
+                    binding.barVelocidad?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrasbw)
+                    binding.barReto?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrasbw)
+                    binding.barAudio?.progressDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.barrascolor)
                 } // audio
                 else -> {
                     //  no pasa nada
@@ -68,9 +79,27 @@ class BarFragment : Fragment() {
         //Log.i("viewModel", "Hay cambio2")
         //  Cambios en la variabilidad
         viewModel.variability.observe(viewLifecycleOwner, Observer{v ->
-            //Log.i("viewModel", "Hay cambio2")
-            binding.vVelocidad?.text = getString(R.string.vVelocidad,v)
-            binding.barVelocidad?.progress = v.toInt()
+            when(lastChange){
+                1->{
+                    binding.vVelocidad?.text = getString(R.string.vVariability,v)
+                    binding.barVelocidad?.progress = v.toInt()
+                } // velocidad
+
+                2->{
+                    binding.vReto?.text = getString(R.string.vVariability,v)
+                    binding.barReto?.progress = v.toInt()
+                } // reto
+
+                3->{
+                    binding.vAudio?.text = getString(R.string.vVariability,v)
+                    binding.barAudio?.progress = v.toInt()
+                } // audio
+
+                else ->{
+
+                }
+            }
+
         })
     }
 }
