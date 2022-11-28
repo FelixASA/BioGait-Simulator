@@ -19,15 +19,26 @@ class MainActivity : AppCompatActivity() {
         //Landscape mode
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
-        binding.btnInicio?.setOnClickListener {
-            clickBoton()
+        binding.btnLineal?.setOnClickListener {
+            val intent = Intent(this,SimulatorActivity::class.java)
+            intent.putExtra("CASO","1")
+            startActivity(intent)
         }
 
+        binding.btnExponencial?.setOnClickListener {
+            val intent = Intent(this,SimulatorActivity::class.java)
+            intent.putExtra("CASO","2")
+            startActivity(intent)
+        }
+
+        binding.btnAsintotica?.setOnClickListener {
+            val intent = Intent(this,SimulatorActivity::class.java)
+            intent.putExtra("CASO","3")
+            startActivity(intent)
+        }
+
+
+
     }
 
-    fun clickBoton(){
-        val intent = Intent(this,SimulatorActivity::class.java)
-        intent.putExtra("LLAVE","Hola activity2")
-        startActivity(intent)
-    }
 }

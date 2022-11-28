@@ -4,5 +4,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Fragmento bar -->
     <string name="vVariability">%.2f</string>
-
+    <!-- Fragmento velocidad -->
+    <string name="vSpeed">%.2f km/h</string>
+    <!-- Fragmento stat -->
+    <string name="sesion1">1 - 0:00 a 5:00</string>
+    <string name="sesion20">20 - 25:00 a 30:00</string>
 </resources>

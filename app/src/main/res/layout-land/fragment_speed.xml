@@ -46,19 +46,19 @@
         android:minWidth="50dp"
         android:minHeight="50dp"
         android:src="@android:drawable/arrow_up_float"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintStart_toEndOf="@+id/txtSpeed"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/txtSpeed"
         android:layout_width="181dp"
         android:layout_height="65dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/border_green"
         android:backgroundTint="#99CC00"
-        android:text="%.2f km/h"
+        android:text="@string/vSpeed"
         android:textAlignment="center"
         android:textSize="30dp"
         app:layout_constraintStart_toEndOf="@+id/btnMenos"

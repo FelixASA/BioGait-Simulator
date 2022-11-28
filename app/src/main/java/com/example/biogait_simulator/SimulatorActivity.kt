@@ -26,10 +26,10 @@ class SimulatorActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         val bundle = intent.extras
-        val dato = bundle?.get("LLAVE")
+        val dato = bundle?.get("CASO")
 
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        viewModel = ViewModelProvider(this).get(SimulatorViewModel::class.java)
+        viewModel.setPaciente(Integer.parseInt(dato as String))
 
         val newStatFragment = StatFragment()
         val newSpeedFragment = SpeedFragment()
@@ -43,7 +43,6 @@ class SimulatorActivity : AppCompatActivity() {
         transaction.add(R.id.FrameChallenge, newChallengeFragment )
         transaction.addToBackStack(null)
         transaction.commit()
-
 
     }
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.biogait_simulator.SimulatorViewModel
 import com.example.biogait_simulator.databinding.FragmentStatBinding
@@ -34,11 +35,28 @@ class StatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(SimulatorViewModel::class.java)
 
-        binding.btnPlay?.setOnClickListener{
+        viewModel.paciente.observe(viewLifecycleOwner, Observer { p->
+            when(p){
+                1->{
+                    binding.txtPaciente?.text = p.toString()
+                    // algoritmo
+                }
+                2->{
+                    binding.txtPaciente?.text = p.toString()
+                    //  algoritmo
+                }
+                3->{
+                    binding.txtPaciente?.text = p.toString()
+                    //  algoritmo
+                }
+            }
+        })
+
+        binding.btnInicial?.setOnClickListener{
             Toast.makeText(activity,"Iniciar", Toast.LENGTH_LONG).show()
-            viewModel.setVariability(20.0)
-            viewModel.setLastChange(3)
-            Log.i("viewModel", "Hay cambio1")
+            //viewModel.setVariability(20.0)
+            //viewModel.setLastChange(3)
+            Log.i("viewModel", "Inicial")
         }
 
     }

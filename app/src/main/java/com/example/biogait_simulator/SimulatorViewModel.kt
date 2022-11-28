@@ -9,9 +9,11 @@ class SimulatorViewModel : ViewModel() {
     private var _variability = MutableLiveData<Double>().apply { value = 0.00 } // Refleja el cambio de la variabilidad con las formulas
     private var _lastChange = MutableLiveData<Int>().apply { value = 1 } // Ultimo cambio :: 1 = velocidad, 2 = reto, 3 = audio
     private var _challenge = MutableLiveData<Int>() // Reto :: 1 = mariposa, 2 = globos, 3 = mascota, 0 = desabilitado
-    private var _speed = MutableLiveData<Float>() // Refleja el cambio de velocidad ingresado por el usuario
+    private var _speed = MutableLiveData<Float>().apply { value = 2.0F } // Refleja el cambio de velocidad ingresado por el usuario
     private var _audio = MutableLiveData<Boolean>() // On/Off del audio feedback
+    private var _paciente = MutableLiveData<Int>()
 
+    val paciente: LiveData<Int> = _paciente
     val variability: LiveData<Double> = _variability
     val lastChange: LiveData<Int> = _lastChange
     val challenge: LiveData<Int> = _challenge
@@ -38,4 +40,7 @@ class SimulatorViewModel : ViewModel() {
         _audio.value = a
     }
 
+    fun setPaciente( p : Int){
+        _paciente.value = p
+    }
 }
