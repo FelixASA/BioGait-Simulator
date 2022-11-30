@@ -58,6 +58,8 @@ class StatFragment : Fragment() {
     private var re:Int = 0
     private var va:Float = 0F
 
+    private var tiempo2: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -83,12 +85,16 @@ class StatFragment : Fragment() {
         val timerSimulacion = object : CountDownTimer(300000, 1000){
             override fun onTick(t2: Long) {
                 var tiempo: Long
+                tiempo2 = tiempo2 + 2
                 if(sesion){
                     tiempo = tiempoSS1 - t2
                 }else {
                     tiempo = tiempoSS2 - t2
                 }
+
+                //tiempo = 10000 - t2
                 binding.txtTiempo?.text = timeStringFromLong(tiempo)
+                //binding.txtTiempo?.text = tiempo2.toString()
                 t = timeStringFromLong(tiempo)
                 //  Escritura de csv
                 var fileOutputStream: FileOutputStream = FileOutputStream(path+"/"+fileName+timeStamp+".csv", true)
@@ -107,6 +113,7 @@ class StatFragment : Fragment() {
                 binding.btnSiguiente?.isEnabled = true
                 binding.btnInicial?.isEnabled = true // Por si quiere repetir
                 disableAll(viewModel)
+                tiempo2 = 0
             }
 
         }
@@ -238,6 +245,13 @@ class StatFragment : Fragment() {
     //  Obtener variabilidad
     private fun getVariability(tiempo: Long): Float {
         var x = tiempo / (30 * 60)
+        /*
+        *   sesion 1
+        *   tiempo :: segundos 0-5 minutos :: 0s a 300s
+        *   sesion 2
+        *   tiempo: segungo 25 - 30 minutos :: 35700s 36000s
+        *   x = tiempo / ( 30 * 60 * 20 )
+        * */
         Log.i("X", x.toString())
         var newValue: Float = 0F
         //  Si el ultimo cambio no es velocidad entonces
@@ -247,16 +261,17 @@ class StatFragment : Fragment() {
         Log.i("VALUE", this.value.toString())
         when(algoritmo){
             1->{
-                newValue = (x / (20) * 100).toFloat()
+                newValue = (x * 100).toFloat()
                 Log.i("NUEW-VALUE", newValue.toString())
             } //    Lineal
             2->{
-                newValue = (exp(x.toDouble()) / exp(20.0) * 100).toFloat()
+                newValue = (exp(x.toDouble()) / kotlin.math.exp(1F) * 100).toFloat()
                 Log.i("NUEW-VALUE", newValue.toString())
             } //    Expo
             3->{
-                newValue = ((1 - exp(x.toDouble() * -1)) * 100).toFloat()
-                Log.i("NUEW-VALUE", newValue.toString())
+                newValue = ((1 - exp(x.toDouble() * -1 * (3/4))) * 100).toFloat()
+                //newValue = (((1- exp(x.toDouble()) * -1 * (3/4) ) * 100).toFloat()
+                        Log.i("NUEW-VALUE", newValue.toString())
             }  //   Asint
         }
         this.va = abs(this.value - newValue)
