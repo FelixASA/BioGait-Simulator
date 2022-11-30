@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.biogait_simulator.R
 import com.example.biogait_simulator.SimulatorViewModel
 import com.example.biogait_simulator.databinding.FragmentStatBinding
 import java.io.File
@@ -90,9 +91,13 @@ class StatFragment : Fragment() {
                 binding.txtTiempo?.text = timeStringFromLong(tiempo)
                 t = timeStringFromLong(tiempo)
                 //  Escritura de csv
+                var fileOutputStream: FileOutputStream = FileOutputStream(path+"/"+fileName+timeStamp+".csv", true)
+                var cadena: String = getString(R.string.CSVContent,p,s,t,v,r,re,va)
+                fileOutputStream.write(cadena.toByteArray())
+                /*
                 File(path+"/"+fileName+timeStamp+".csv").printWriter().use{
                         out-> out.println("$p, $s, $t, $v, $r, $re, $va")
-                }
+                }*/
                 Log.i("VALIABILIDAD",getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo)).toString())
             }
 
