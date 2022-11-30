@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -26,6 +27,10 @@ class SimulatorActivity : AppCompatActivity() {
         //View binding
         val binding = ActivitySimulatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val actionbar = supportActionBar
+        actionbar!!.title = "SimulatorActivity"
+        actionbar.setDisplayHomeAsUpEnabled(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
@@ -56,5 +61,15 @@ class SimulatorActivity : AppCompatActivity() {
         transaction.addToBackStack(null)
         transaction.commit()
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.finish()
     }
 }

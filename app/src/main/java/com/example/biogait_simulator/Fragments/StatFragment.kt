@@ -94,6 +94,7 @@ class StatFragment : Fragment() {
                 var fileOutputStream: FileOutputStream = FileOutputStream(path+"/"+fileName+timeStamp+".csv", true)
                 var cadena: String = getString(R.string.CSVContent,p,s,t,v,r,re,va)
                 fileOutputStream.write(cadena.toByteArray())
+
                 /*
                 File(path+"/"+fileName+timeStamp+".csv").printWriter().use{
                         out-> out.println("$p, $s, $t, $v, $r, $re, $va")
