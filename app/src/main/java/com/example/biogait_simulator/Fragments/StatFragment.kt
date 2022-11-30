@@ -23,6 +23,7 @@ import java.lang.Math.abs
 import java.lang.Math.exp
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class StatFragment : Fragment() {
@@ -43,12 +44,18 @@ class StatFragment : Fragment() {
     private var algoritmo: Int = 0
 
     private lateinit var fileFolder: File
-    private lateinit var fileCSV: FileOutputStream
     private lateinit var path: String
     private lateinit var timeStamp: String
+    private lateinit var fileName: String
     private var flagFile: Boolean = false //    Para crear el timestamp del archivo
 
-
+    private var p:Int = 0
+    private var s:Int = 0
+    private var t:String = "00:00"
+    private var v:Int = 0
+    private var r:Int = 0
+    private var re:Int = 0
+    private var va:Float = 0F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,12 +88,12 @@ class StatFragment : Fragment() {
                     tiempo = tiempoSS2 - t2
                 }
                 binding.txtTiempo?.text = timeStringFromLong(tiempo)
+                t = timeStringFromLong(tiempo)
                 //  Escritura de csv
-
-                Log.i("TIMESTAMP",timeStamp)
-
-                //Log.i("DIRECTORIO",path)
-                //Log.i("VALIABILIDAD",getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo)).toString())
+                File(path+"/"+fileName+timeStamp+".csv").printWriter().use{
+                        out-> out.println("$p, $s, $t, $v, $r, $re, $va")
+                }
+                Log.i("VALIABILIDAD",getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo)).toString())
             }
 
             override fun onFinish() {
@@ -115,20 +122,40 @@ class StatFragment : Fragment() {
         viewModel.paciente.observe(viewLifecycleOwner, Observer { p->
             binding.txtPaciente?.text = p.toString()
             this.algoritmo = p
+            this.p = p
         })
 
         viewModel.sesion.observe(viewLifecycleOwner, Observer { s->
             this.sesion = s
             if(s){
                 binding.txtSesion?.text = "1, 00:00 a 05:00"
+                this.s = 1
             }else{
                 binding.txtSesion?.text = "20, 25:00 a 30:00"
+                this.s = 20
             }
         })
 
         //  Obtener los valores
         viewModel.lastChange.observe(viewLifecycleOwner, Observer { ls ->
             this.lastChange = ls
+            when(ls){
+                1->{
+                    this.v = 1
+                    this.r = 0
+                    this.re = 0
+                }
+                2->{
+                    this.v = 0
+                    this.r = 1
+                    this.re = 0
+                }
+                3->{
+                    this.v = 0
+                    this.r = 0
+                    this.re = 1
+                }
+            }
         })
 
         viewModel.speed.observe(viewLifecycleOwner, Observer { s ->
@@ -140,9 +167,6 @@ class StatFragment : Fragment() {
 
         //  Boton para inicial la simulacion
         binding.btnInicial?.setOnClickListener{
-            //Toast.makeText(activity,"Iniciar", Toast.LENGTH_LONG).show()
-            //viewModel.setVariability(20.0)
-            //viewModel.setLastChange(3)
             binding.btnInicial?.isEnabled = false
 
             //  Crear archivo csv
@@ -150,16 +174,20 @@ class StatFragment : Fragment() {
             if(!fileFolder.exists()){ fileFolder.mkdir() }
             this.path = fileFolder.absolutePath
             if(!this.flagFile){
-                val fileName = "BGSLog_"
+                fileName = "BGSLog_"
                 timeStamp = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Date())
-                //fileCSV = File(fileFolder.absolutePath+fileName+timeStamp+".csv")
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    val p = "Paciente"
+                    val s = "Sesion"
+                    val t = "Tiempo"
+                    val v = "Velocidad"
+                    val r = "Reto"
+                    val re = "Retroalimentacion"
+                    val va = "Variabilidad"
                     if (Environment.isExternalStorageManager()) {
-                        val a = "algo"
-                        val b = "cosa"
-                        File(fileFolder.absolutePath+"/"+fileName+timeStamp+".csv").printWriter().use{
-                                out-> out.println("$a, $b")
+                        File(path+"/"+fileName+timeStamp+".csv").printWriter().use{
+                                out-> out.println("$p, $s, $t, $v, $r, $re, $va")
                         }
                     }
                 }
@@ -210,6 +238,7 @@ class StatFragment : Fragment() {
         if(lastChange!=1){
             this.value = 100F
         }
+        Log.i("VALUE", this.value.toString())
         when(algoritmo){
             1->{
                 newValue = (x / (20) * 100).toFloat()
@@ -224,6 +253,7 @@ class StatFragment : Fragment() {
                 Log.i("NUEW-VALUE", newValue.toString())
             }  //   Asint
         }
-        return abs(this.value - newValue)
+        this.va = abs(this.value - newValue)
+        return this.va
     }
 }
