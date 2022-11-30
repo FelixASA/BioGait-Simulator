@@ -12,6 +12,8 @@ class SimulatorViewModel : ViewModel() {
     private var _speed = MutableLiveData<Float>().apply { value = 2.0F } // Refleja el cambio de velocidad ingresado por el usuario
     private var _audio = MutableLiveData<Boolean>() // On/Off del audio feedback
     private var _paciente = MutableLiveData<Int>()
+    private var _sesion = MutableLiveData<Boolean>().apply { value = true } // True = sesion1, False = sesion20
+    private var _ui = MutableLiveData<Boolean>().apply { value = false } // On/Off imageButons
 
     val paciente: LiveData<Int> = _paciente
     val variability: LiveData<Double> = _variability
@@ -19,6 +21,8 @@ class SimulatorViewModel : ViewModel() {
     val challenge: LiveData<Int> = _challenge
     val speed: LiveData<Float> = _speed
     val audio: LiveData<Boolean> = _audio
+    val sesion: LiveData<Boolean> = _sesion
+    val ui: LiveData<Boolean> = _ui
 
     fun setVariability(v: Double){
         _variability.value = v
@@ -40,7 +44,15 @@ class SimulatorViewModel : ViewModel() {
         _audio.value = a
     }
 
-    fun setPaciente( p : Int){
+    fun setPaciente(p : Int){
         _paciente.value = p
+    }
+
+    fun setSesion(s : Boolean){
+        _sesion.value = s
+    }
+
+    fun setUI(o : Boolean){
+        _ui.value = o
     }
 }

@@ -61,5 +61,15 @@ class SpeedFragment : Fragment() {
             }
         }
 
+        viewModel.ui.observe(viewLifecycleOwner, Observer { ui ->
+            if(ui){
+                binding.btnMas?.isEnabled = true
+                binding.btnMenos?.isEnabled = true
+            }else{
+                binding.btnMas?.isEnabled = false
+                binding.btnMenos?.isEnabled = false
+            }
+        })
+
     }
 }

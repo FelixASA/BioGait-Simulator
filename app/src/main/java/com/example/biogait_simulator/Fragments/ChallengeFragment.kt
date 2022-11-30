@@ -116,6 +116,20 @@ class ChallengeFragment : Fragment() {
                 binding.switchAudio?.setTextColor(Color.parseColor("#A9A9A9")) // DarkGrey code
             }
         })
+
+        viewModel.ui.observe(viewLifecycleOwner, Observer { ui ->
+            if(ui){
+                binding.switchAudio?.isEnabled = true
+                binding.btnMascot?.isEnabled = true
+                binding.btnBallons?.isEnabled = true
+                binding.btnButtlefly?.isEnabled = true
+            }else{
+                binding.switchAudio?.isEnabled = false
+                binding.btnMascot?.isEnabled = false
+                binding.btnBallons?.isEnabled = false
+                binding.btnButtlefly?.isEnabled = false
+            }
+        })
     }
 
 }
