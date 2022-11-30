@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -38,6 +41,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnLineal?.setOnClickListener {
             if(checkPermission()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (!Environment.isExternalStorageManager()) {
+                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                        startActivity(intent)
+                    }
+                }
                 val intent = Intent(this, SimulatorActivity::class.java)
                 intent.putExtra("CASO", "1")
                 startActivity(intent)
@@ -46,6 +55,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnExponencial?.setOnClickListener {
             if(checkPermission()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (!Environment.isExternalStorageManager()) {
+                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                        startActivity(intent)
+                    }
+                }
                 val intent = Intent(this, SimulatorActivity::class.java)
                 intent.putExtra("CASO", "2")
                 startActivity(intent)
@@ -54,6 +69,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnAsintotica?.setOnClickListener {
             if(checkPermission()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (!Environment.isExternalStorageManager()) {
+                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                        startActivity(intent)
+                    }
+                }
                 val intent = Intent(this, SimulatorActivity::class.java)
                 intent.putExtra("CASO", "3")
                 startActivity(intent)
@@ -67,8 +88,8 @@ class MainActivity : AppCompatActivity() {
     private fun getPermissions() {
         dexter = Dexter.withContext(this)
             .withPermissions(
-                android.Manifest.permission.READ_EXTERNAL_STORAGE,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
                 android.Manifest.permission.BLUETOOTH,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
             ).withListener(object : MultiplePermissionsListener{

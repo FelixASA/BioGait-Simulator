@@ -1,6 +1,11 @@
 package com.example.biogait_simulator
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -21,6 +26,13 @@ class SimulatorActivity : AppCompatActivity() {
         //View binding
         val binding = ActivitySimulatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivity(intent)
+            }
+        }
 
         //Landscape mode
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
