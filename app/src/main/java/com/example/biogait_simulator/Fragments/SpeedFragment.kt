@@ -58,6 +58,7 @@ class SpeedFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 viewModel.setSpeed(seekBar.progress)
                 binding.txtSpeed?.setTextColor(Color.parseColor("#A9A9A9"))
+                viewModel.setLastChange(1)
             }
 
         })
