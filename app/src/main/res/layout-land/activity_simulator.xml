@@ -71,7 +71,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:background="@drawable/round_background_videogame"
                     android:gravity="center">
 

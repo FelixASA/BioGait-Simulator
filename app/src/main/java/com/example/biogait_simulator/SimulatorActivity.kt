@@ -47,6 +47,7 @@ class SimulatorActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(SimulatorViewModel::class.java)
         viewModel.setPaciente(Integer.parseInt(dato as String))
+        resetVMValue()
 
         val newStatFragment = StatFragment()
         val newSpeedFragment = SpeedFragment()
@@ -70,6 +71,18 @@ class SimulatorActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        viewModel.setClose(true)
         this.finish()
+    }
+
+    //  reseteamos todos los valores del viewmodel
+    private fun resetVMValue(){
+        viewModel.setSesion(true)
+        viewModel.setMinuto(true)
+        viewModel.setUI(false)
+        viewModel.setChallenge(0)
+        viewModel.setAudio(false)
+        viewModel.setSpeed(0)
+        viewModel.setVariability(0.00)
     }
 }

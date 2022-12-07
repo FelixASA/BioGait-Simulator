@@ -14,7 +14,7 @@
         android:layout_height="100dp"
         android:layout_margin="10dp"
         android:background="@drawable/border_green"
-        android:text="Lineal" />
+        android:text="Caso 1" />
 
     <Button
         android:id="@+id/btnExponencial"
@@ -22,7 +22,7 @@
         android:layout_height="100dp"
         android:layout_margin="10dp"
         android:background="@drawable/border_green"
-        android:text="EXPONENCIAL" />
+        android:text="Caso 2" />
 
     <Button
         android:id="@+id/btnAsintotica"
@@ -30,6 +30,6 @@
         android:layout_height="100dp"
         android:layout_margin="10dp"
         android:background="@drawable/border_green"
-        android:text="ASINTOTICA" />
+        android:text="Caso 3" />
 
 </LinearLayout>

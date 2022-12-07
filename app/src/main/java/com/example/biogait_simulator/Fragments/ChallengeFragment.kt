@@ -111,7 +111,7 @@ class ChallengeFragment : Fragment() {
         //  Nomas para comprobar el cambio de estado
         viewModel.audio.observe(viewLifecycleOwner, Observer{ au->
             if(au){
-                binding.switchAudio?.setTextColor(Color.parseColor("GREEN"))
+                binding.switchAudio?.setTextColor(Color.parseColor("#023020"))
             }else{
                 binding.switchAudio?.setTextColor(Color.parseColor("#A9A9A9")) // DarkGrey code
             }

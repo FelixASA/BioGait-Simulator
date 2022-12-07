@@ -1,9 +1,11 @@
 package com.example.biogait_simulator.Fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,8 +21,7 @@ class SpeedFragment : Fragment() {
 
     private lateinit var viewModel: SimulatorViewModel
 
-    private var vSpeed: Float = 2.0F
-
+    private var vSpeed: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,35 +41,29 @@ class SpeedFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(SimulatorViewModel::class.java)
 
         viewModel.speed.observe(viewLifecycleOwner, Observer { sp ->
-            binding.txtSpeed?.text = getString(R.string.vSpeed, sp)
+            vSpeed = sp
+            binding.txtSpeed?.text = getString(R.string.vSpeed, vSpeed)
         })
 
-        //  NOTA: no existe la funcion de mantener el click para incremental
-
-        binding.btnMas?.setOnClickListener {
-            if(vSpeed<14.0F){
-                vSpeed += 0.1F
-                viewModel.setSpeed(vSpeed)
-                viewModel.setLastChange(1)
+        binding.barSpeed?.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seek: SeekBar?, progress: Int, fromUser: Boolean) {
+                vSpeed = progress
+                binding.txtSpeed?.setTextColor(Color.parseColor("GREEN"))
+                binding.txtSpeed?.text = getString(R.string.vSpeed, vSpeed)
             }
-        }
 
-        binding.btnMenos?.setOnClickListener {
-            if(vSpeed>0.1){
-                vSpeed -= 0.1F
-                viewModel.setSpeed(vSpeed)
-                viewModel.setLastChange(1)
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
             }
-        }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                viewModel.setSpeed(seekBar.progress)
+                binding.txtSpeed?.setTextColor(Color.parseColor("#A9A9A9"))
+            }
+
+        })
 
         viewModel.ui.observe(viewLifecycleOwner, Observer { ui ->
-            if(ui){
-                binding.btnMas?.isEnabled = true
-                binding.btnMenos?.isEnabled = true
-            }else{
-                binding.btnMas?.isEnabled = false
-                binding.btnMenos?.isEnabled = false
-            }
+            binding.barSpeed?.isEnabled = ui
         })
 
     }
