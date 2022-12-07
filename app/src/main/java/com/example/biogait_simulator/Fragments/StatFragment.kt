@@ -264,6 +264,7 @@ class StatFragment : Fragment() {
         //  sesion 1
         if(this.sesion){
             //  minuto 1-5
+            this.s = 1
             if(this.minuto){
                 this.tiempoAbsoluto = tiempoMin1_5
             }else{
@@ -272,6 +273,7 @@ class StatFragment : Fragment() {
             }
         }else{
             //  sesion 20
+            this.s = 20
                 //  minuto 571-575
             if(this.minuto){
                 this.tiempoAbsoluto = tiempoMin571_575
