@@ -99,7 +99,7 @@ class StatFragment : Fragment() {
                 tiempo = tiempoAbsoluto - ((t/1000)*2000) // el tiempo esta en incremento de 2s
                 //Log.i("TIEMPO", TimeUnit.MILLISECONDS.toSeconds(tiempo).toString())
                 binding.txtTiempo?.text = timeStringFromLong(tiempo)
-                tiempoCSV = tiempo.toString()
+                tiempoCSV = timeStringFromLong(tiempo)
                 //  Escritura de csv
                 var fileOutputStream: FileOutputStream = FileOutputStream(path+"/"+fileName+timeStamp+".csv", true)
                 var cadena: String = getString(R.string.CSVContent,p,s,tiempoCSV,v,r,re,va)
@@ -114,6 +114,7 @@ class StatFragment : Fragment() {
                 binding.sesion20?.isEnabled = true
                 binding.min15?.isEnabled = true
                 binding.min2530?.isEnabled = true
+                disableAll(viewModel)
             }
 
         }
@@ -163,6 +164,7 @@ class StatFragment : Fragment() {
 
         viewModel.speed.observe(viewLifecycleOwner, Observer { s ->
             this.value = s
+            this.v = s
             if(flagFile) {
                 timerCalibrar.start()
             }
