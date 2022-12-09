@@ -305,19 +305,19 @@ class StatFragment : Fragment() {
     //  Obtener variabilidad
     private fun getVariability(tiempo: Long): Double {
         Log.i("TIEMPO", tiempo.toString())
-        var x:Double = (tiempo.toDouble() / (30 * 60 * 20))
+        var x:Double = (tiempo.toDouble() / 60) //  Tiempo
         Log.i("X", x.toString())
         var newValue: Double = 0.00
-        var value: Double = ((this.value).toDouble()/100)
-        /*
+        var value: Double = (this.value).toDouble() //    Velocidad
+
         //  Si el ultimo cambio no es velocidad entonces
         if(lastChange!=1){
             this.value = 100
-        */
+
         Log.i("VALUE", value.toString())
         when(algoritmo){
             1->{
-                newValue = (x/(600*100))
+                newValue = (x/600)*100
                 Log.i("NUEW-VALUE-1", newValue.toString())
             } //    Lineal
             2->{
@@ -325,11 +325,11 @@ class StatFragment : Fragment() {
                 Log.i("NUEW-VALUE-2", newValue.toString())
             } //    Expo
             3->{
-                newValue = ((1-exp(-x/40)*100))
+                newValue = (1-exp(-x/40))*100
                 Log.i("NUEW-VALUE-3", newValue.toString())
             }  //   Asint
         }
-        this.va = abs(value + newValue)
+        this.va = abs(value - newValue)
         Log.i("VARIABILIDAD:",va.toString())
         return this.va
     }
