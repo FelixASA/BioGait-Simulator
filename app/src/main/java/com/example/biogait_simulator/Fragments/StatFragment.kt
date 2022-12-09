@@ -48,6 +48,7 @@ class StatFragment : Fragment() {
     private var minuto:Boolean = true // true = inicios , false = finales
     private lateinit var timerSimular: CountDownTimer
     private lateinit var timerCalibrar: CountDownTimer
+    // 20segundos = 20000
 
 
     //  Para la variabilidad
@@ -99,12 +100,19 @@ class StatFragment : Fragment() {
                 tiempo = tiempoAbsoluto - ((t/1000)*2000) // el tiempo esta en incremento de 2s
                 //Log.i("TIEMPO", TimeUnit.MILLISECONDS.toSeconds(tiempo).toString())
                 binding.txtTiempo?.text = timeStringFromLong(tiempo)
-                tiempoCSV = timeStringFromLong(tiempo)
+                tiempoCSV = binding.txtTiempo?.text.toString()
+                Log.i("FORMATO", tiempoCSV)
                 //  Escritura de csv
-                var fileOutputStream: FileOutputStream = FileOutputStream(path+"/"+fileName+timeStamp+".csv", true)
-                var cadena: String = getString(R.string.CSVContent,p,s,tiempoCSV,v,r,re,va)
-                fileOutputStream.write(cadena.toByteArray())
+                try {
+                    var fileOutputStream: FileOutputStream =
+                        FileOutputStream(path + "/" + fileName + timeStamp + ".csv", true)
+                    var cadena: String =
+                        getString(R.string.CSVContent, p, s, tiempoCSV, v, r, re, va)
+                    fileOutputStream.write(cadena.toByteArray())
+                }catch (e: Exception){
 
+                }
+                // Funcion temporar para ver la variabilidad en tiempo real
                 viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo))))
             }
 
@@ -220,8 +228,13 @@ class StatFragment : Fragment() {
                     val re = "Retroalimentacion"
                     val va = "Variabilidad"
                     if (Environment.isExternalStorageManager()) {
-                        File(path+"/"+fileName+timeStamp+".csv").printWriter().use{
-                                out-> out.println("$p, $s, $t, $v, $r, $re, $va")
+                        try {
+                            File(path + "/" + fileName + timeStamp + ".csv").printWriter()
+                                .use { out ->
+                                    out.println("$p, $s, $t, $v, $r, $re, $va")
+                                }
+                        }catch (e: Exception){
+
                         }
                     }
                 }

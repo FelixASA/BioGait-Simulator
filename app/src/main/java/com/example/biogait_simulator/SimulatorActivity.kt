@@ -70,8 +70,8 @@ class SimulatorActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         viewModel.setClose(true)
+        super.onBackPressed()
         this.finish()
     }
 
@@ -84,5 +84,6 @@ class SimulatorActivity : AppCompatActivity() {
         viewModel.setAudio(false)
         viewModel.setSpeed(0)
         viewModel.setVariability(0.00)
+        viewModel.setClose(false)
     }
 }

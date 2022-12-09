@@ -5,7 +5,7 @@
     <!-- Fragmento bar -->
     <string name="vVariability">%.2f</string>
     <!-- Fragmento velocidad -->
-    <string name="vSpeed">Velocidad: %d</string>
+    <string name="vSpeed">Velocidad: %d %%</string>
     <!-- Fragmento stat -->
     <string name="timer">00:00</string>
     <string name="directorio">%s/%s</string>
