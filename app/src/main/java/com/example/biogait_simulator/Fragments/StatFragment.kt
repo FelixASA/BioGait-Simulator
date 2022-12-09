@@ -50,7 +50,6 @@ class StatFragment : Fragment() {
     private lateinit var timerCalibrar: CountDownTimer
     // 20segundos = 20000
 
-
     //  Para la variabilidad
     private var value: Int = 0
     private var lastChange: Int = 0
