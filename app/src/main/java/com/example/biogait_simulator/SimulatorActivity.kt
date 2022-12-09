@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.example.biogait_simulator.Fragments.BarFragment
 import com.example.biogait_simulator.Fragments.ChallengeFragment
@@ -49,6 +51,15 @@ class SimulatorActivity : AppCompatActivity() {
         viewModel.setPaciente(Integer.parseInt(dato as String))
         resetVMValue()
 
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add<StatFragment>(R.id.FrameStat)
+            add<SpeedFragment>(R.id.FrameSpeed)
+            add<ChallengeFragment>(R.id.FrameChallenge)
+            add<BarFragment>(R.id.FrameBar)
+        }
+
+        /*
         val newStatFragment = StatFragment()
         val newSpeedFragment = SpeedFragment()
         val newBarFragment = BarFragment()
@@ -61,7 +72,7 @@ class SimulatorActivity : AppCompatActivity() {
         transaction.add(R.id.FrameChallenge, newChallengeFragment )
         transaction.addToBackStack(null)
         transaction.commit()
-
+        */
     }
 
     override fun onSupportNavigateUp(): Boolean {
