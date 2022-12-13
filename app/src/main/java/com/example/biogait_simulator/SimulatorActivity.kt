@@ -56,20 +56,6 @@ class SimulatorActivity : AppCompatActivity() {
             add<BarFragment>(R.id.FrameBar)
         }
 
-        /*
-        val newStatFragment = StatFragment()
-        val newSpeedFragment = SpeedFragment()
-        val newBarFragment = BarFragment()
-        val newChallengeFragment = ChallengeFragment()
-
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.FrameStat, newStatFragment )
-        transaction.add(R.id.FrameSpeed, newSpeedFragment )
-        transaction.add(R.id.FrameBar, newBarFragment )
-        transaction.add(R.id.FrameChallenge, newChallengeFragment )
-        transaction.addToBackStack(null)
-        transaction.commit()
-        */
     }
 
     override fun onSupportNavigateUp(): Boolean {

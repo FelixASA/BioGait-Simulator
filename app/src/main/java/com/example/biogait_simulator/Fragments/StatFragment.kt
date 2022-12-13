@@ -36,7 +36,9 @@ class StatFragment : Fragment() {
     private lateinit var viewModel: SimulatorViewModel
 
     //  Para el tiempo de simulacion
-    private var tiempo:Long = 0
+    private var tiempo:Long = 0 //  Tiempo que se utiliza para el calculo y CSV
+    private var tiempoVista: Long = 0 //   Tiempo para mostrar
+    private var tiempoCaptura: Long = 0 //  Tiempo en el momento donde empieza a calibrar
     private var tiempoAbsoluto:Long = 0
     private val tiempoMin1_5:Long =  300000 //  Para sesion1
     private val tiempoMin25_30:Long = 1800000   //  Para sesion1
@@ -98,8 +100,13 @@ class StatFragment : Fragment() {
             override fun onTick(t: Long) {
                 tiempo = tiempoAbsoluto - ((t/1000)*2000) // el tiempo esta en incremento de 2s
                 //Log.i("TIEMPO", TimeUnit.MILLISECONDS.toSeconds(tiempo).toString())
-                binding.txtTiempo?.text = timeStringFromLong(tiempo)
-                tiempoCSV = binding.txtTiempo?.text.toString()
+                if(sesion){
+                    tiempoVista = tiempoMin1_5 - ((t/1000)*2000)
+                }else{
+                    tiempoVista = tiempoMin25_30 - ((t/1000)*2000)
+                }
+                binding.txtTiempo?.text = timeStringFromLong(tiempoVista)
+                tiempoCSV = timeStringFromLong(tiempoVista)
                 Log.i("FORMATO", tiempoCSV)
                 //  Escritura de csv
                 try {
@@ -111,8 +118,7 @@ class StatFragment : Fragment() {
                 }catch (e: Exception){
 
                 }
-                // Funcion temporar para ver la variabilidad en tiempo real
-                viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo))))
+
             }
 
             override fun onFinish() {
@@ -122,6 +128,7 @@ class StatFragment : Fragment() {
                 binding.min15?.isEnabled = true
                 binding.min2530?.isEnabled = true
                 disableAll(viewModel)
+                flagFile = false
             }
 
         }
@@ -129,10 +136,12 @@ class StatFragment : Fragment() {
         timerCalibrar = object : CountDownTimer(tiempoCalibracion, 1000){
             override fun onTick(tiempo: Long) {
                 binding.txtCalibracion?.text = timeStringFromLong(tiempo)
+                disableAll(viewModel)
             }
 
             override fun onFinish() {
-                viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo))))
+                viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempoCaptura))))
+                enableAll(viewModel)
             }
 
         }
@@ -163,16 +172,21 @@ class StatFragment : Fragment() {
             }else{
                 this.re = 0
             }
+            // cambio de variabilidad
+            viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo))))
         })
 
         viewModel.challenge.observe(viewLifecycleOwner, Observer { ch ->
             this.r = ch
+            //  cambio de variabilidad
+            viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo))))
         })
 
         viewModel.speed.observe(viewLifecycleOwner, Observer { s ->
             this.value = s
             this.v = s
             if(flagFile) {
+                tiempoCaptura = tiempo  // capturamos el tiempo para calculo de calibracion
                 timerCalibrar.start()
             }
         })
@@ -181,6 +195,10 @@ class StatFragment : Fragment() {
             if(c){
                 stopTimer()
             }
+        })
+
+        viewModel.lastChange.observe(viewLifecycleOwner, Observer { lc ->
+            this.lastChange = lc
         })
 
         //--------------------------------------------UI--------------------------------------------------------------
@@ -298,6 +316,7 @@ class StatFragment : Fragment() {
 
     //  Sirve para detener los dos timers
     private fun stopTimer(){
+        flagFile = false
         timerSimular.cancel()
         timerCalibrar.cancel()
     }
@@ -311,9 +330,9 @@ class StatFragment : Fragment() {
         var value: Double = (this.value).toDouble() //    Velocidad
 
         //  Si el ultimo cambio no es velocidad entonces
-        if(lastChange!=1){
-            this.value = 100
-
+        if(lastChange!=1) {
+            value = 100.00
+        }
         Log.i("VALUE", value.toString())
         when(algoritmo){
             1->{
