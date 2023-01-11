@@ -24,13 +24,13 @@
         android:id="@+id/barSpeed"
         android:layout_width="480dp"
         android:layout_height="31dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="24dp"
+        android:progressDrawable="@drawable/seekbar_background"
         android:stepSize="1"
+        android:thumb="@drawable/thumb"
         android:valueFrom="0"
         android:valueTo="100"
-        android:progressDrawable="@drawable/seekbar_background"
-        android:thumb="@drawable/thumb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSpeed" />
 

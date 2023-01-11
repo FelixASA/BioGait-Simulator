@@ -1,11 +1,11 @@
 package com.example.biogait_simulator.Fragments
 
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Environment
+import android.os.*
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,14 +13,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.biogait_simulator.Bluetooth.BluetoothService
 import com.example.biogait_simulator.R
 import com.example.biogait_simulator.SimulatorViewModel
 import com.example.biogait_simulator.databinding.FragmentStatBinding
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.lang.Math.abs
 import java.lang.Math.exp
 import java.text.SimpleDateFormat
@@ -73,6 +77,14 @@ class StatFragment : Fragment() {
     private var re:Int = 0  //  audio feedback
     private var va:Double = 0.00   //  variabilidad
 
+    //  Para Bluetooth
+    val STATE_LISTENING: Int = 1
+    val STATE_CONNECTED: Int = 3
+    val STATE_DISCONNECTED: Int = 4
+    lateinit var bluetoothAdapter: BluetoothAdapter
+    lateinit var bluetoothManager: BluetoothManager
+    var sendReceive: BluetoothService.SendReceive?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -115,8 +127,8 @@ class StatFragment : Fragment() {
                     var cadena: String =
                         getString(R.string.CSVContent, p, s, tiempoCSV, v, r, re, va)
                     fileOutputStream.write(cadena.toByteArray())
-                }catch (e: Exception){
-
+                }catch (e: IOException){
+                    e.printStackTrace()
                 }
 
             }
@@ -178,6 +190,12 @@ class StatFragment : Fragment() {
 
         viewModel.challenge.observe(viewLifecycleOwner, Observer { ch ->
             this.r = ch
+            //  Solo funciona si tiene el bluetooth
+            try {
+                sendReceive?.write(enviarMsg().toByteArray())
+            }catch (e: IOException){
+                e.printStackTrace()
+            }
             //  cambio de variabilidad
             viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo))))
         })
@@ -250,8 +268,8 @@ class StatFragment : Fragment() {
                                 .use { out ->
                                     out.println("$p, $s, $t, $v, $r, $re, $va")
                                 }
-                        }catch (e: Exception){
-
+                        }catch (e: IOException){
+                            e.printStackTrace()
                         }
                     }
                 }
@@ -266,6 +284,32 @@ class StatFragment : Fragment() {
 
         //  Desabilitamos los botones
         disableAll(viewModel)
+
+        //  Bluetooth
+        try {
+            bluetoothManager =
+                requireContext().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+            bluetoothAdapter = bluetoothManager.adapter
+
+            val serverClass =
+                BluetoothService(adapter = bluetoothAdapter, mHandler = mhandler).ServerClass()
+            serverClass.start()
+        }catch (e : IOException){
+            e.printStackTrace()
+            Log.i("ERROR", "No se pudo abrir el servidor Bluetooth")
+        }
+    }
+
+    //  Handler para Bluetooth
+    private val mhandler: Handler = object : Handler(Looper.getMainLooper()){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when(msg.what){
+                STATE_LISTENING ->{ binding.txtBluetooth?.text = "Bluetooth: Listening"}
+                STATE_CONNECTED ->{ binding.txtBluetooth?.text = "Bluetooth: Connected"}
+                STATE_DISCONNECTED -> {binding.txtBluetooth?.text = "Bluetooth: Disconnected"}
+            }
+        }
     }
 
     //  Funcion de auto formato de tiempo
@@ -314,6 +358,89 @@ class StatFragment : Fragment() {
         }
     }
 
+    //  Envia el mensaje bluetooth de acuerdo a la sesion de simulacion
+    private fun enviarMsg(): String{
+        var reto = 0 //Reto :: 1 = mariposa, 2 = globos, 3 = mascota, 0 = desabilitado
+        var escenario = 3 //  alto = 3,   alto normal = 2, normal = 1
+        var mensaje = ""
+        //  Aberracion de codigo
+        when(this.p){
+            1 ->{
+                when(this.s){
+                    1 ->{
+                        if(this.minuto){
+                            //  11
+                            escenario = 3
+                        }else{
+                            //  12
+                            escenario = 3
+                        }
+                    }
+                    20 ->{
+                        if(this.minuto){
+                            //  13
+                            escenario = 1
+                        }else{
+                            //  14
+                            escenario = 1
+                        }
+                    }
+                }
+            }
+            2->{
+                when(this.s){
+                    1 ->{
+                        if(this.minuto){
+                            //  21
+                            escenario = 3
+                        }else{
+                            //  22
+                            escenario = 3
+                        }
+                    }
+                    20 ->{
+                        if(this.minuto){
+                            //  23
+                            escenario = 3
+                        }else{
+                            //  24
+                            escenario = 2
+                        }
+                    }
+                }
+            }
+            3->{
+                when(this.s){
+                    1 ->{
+                        if(this.minuto){
+                            //  31
+                            escenario = 3
+                        }else{
+                            //  32
+                            escenario = 2
+                        }
+                    }
+                    20 ->{
+                        if(this.minuto){
+                            //  33
+                            escenario = 1
+                        }else{
+                            //  34
+                            escenario = 1
+                        }
+                    }
+                }
+            }
+        }
+
+        if(this.r == 0){
+            mensaje = "0"
+        }else{
+            mensaje = this.r.toString() + escenario.toString()
+        }
+        return mensaje
+    }
+
     //  Sirve para detener los dos timers
     private fun stopTimer(){
         flagFile = false
@@ -352,4 +479,7 @@ class StatFragment : Fragment() {
         Log.i("VARIABILIDAD:",va.toString())
         return this.va
     }
+
+
+
 }

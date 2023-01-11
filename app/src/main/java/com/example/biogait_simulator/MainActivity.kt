@@ -2,6 +2,7 @@ package com.example.biogait_simulator
 
 
 import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -37,7 +38,18 @@ class MainActivity : AppCompatActivity() {
         //Landscape mode
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
-        //getPermissions()
+
+        val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+        if (bluetoothAdapter == null) {
+            // Device doesn't support Bluetooth
+            Toast.makeText(this,"Device doesn't support Bluetooth",Toast.LENGTH_LONG)
+        }else {
+            if (bluetoothAdapter?.isEnabled == false) {
+                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                val REQUEST_ENABLE_BT = 100
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+            }
+        }
 
         binding.btnLineal?.setOnClickListener {
             if(checkPermission()) {
@@ -90,8 +102,9 @@ class MainActivity : AppCompatActivity() {
             .withPermissions(
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.BLUETOOTH,
+                android.Manifest.permission.BLUETOOTH_CONNECT,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
             ).withListener(object : MultiplePermissionsListener{
                 override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                     report.let{
