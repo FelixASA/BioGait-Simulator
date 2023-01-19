@@ -130,6 +130,15 @@ class ChallengeFragment : Fragment() {
                 binding.btnButtlefly?.isEnabled = false
             }
         })
+
+        //  Reset
+        viewModel.close.observe(viewLifecycleOwner, Observer { c ->
+            if(c){
+                binding.btnButtlefly?.setBackgroundResource(R.drawable.round_button)
+                binding.btnBallons?.setBackgroundResource(R.drawable.round_button)
+                binding.btnMascot?.setBackgroundResource(R.drawable.round_button)
+            }
+        })
     }
 
 }

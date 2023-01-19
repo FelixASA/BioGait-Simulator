@@ -1,35 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_gravity="center"
-    android:gravity="center"
-    tools:context=".MainActivity" >
+    android:background="#99CC00"
+    tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnLineal"
-        android:layout_width="180dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/border_green"
-        android:text="Caso 1" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnExponencial"
-        android:layout_width="180dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/border_green"
-        android:text="Caso 2" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
 
-    <Button
-        android:id="@+id/btnAsintotica"
-        android:layout_width="180dp"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/border_green"
-        android:text="Caso 3" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-</LinearLayout>
+                <FrameLayout
+                    android:id="@+id/FrameStat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_background_videogame"
+                    android:gravity="center">
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/FrameBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/round_background_videogame"
+                    android:gravity="center">
+
+                </FrameLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/FrameSpeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/round_background_videogame"
+                    android:gravity="center">
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/FrameChallenge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/round_background_videogame"
+                    android:gravity="center">
+
+                </FrameLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

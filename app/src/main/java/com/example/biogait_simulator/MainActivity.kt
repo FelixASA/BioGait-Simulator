@@ -14,7 +14,14 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import com.example.biogait_simulator.Fragments.BarFragment
+import com.example.biogait_simulator.Fragments.ChallengeFragment
+import com.example.biogait_simulator.Fragments.SpeedFragment
+import com.example.biogait_simulator.Fragments.StatFragment
 import com.example.biogait_simulator.databinding.ActivityMainBinding
+import com.example.biogait_simulator.databinding.ActivitySimulatorBinding
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.DexterBuilder
 import com.karumi.dexter.MultiplePermissionsReport
@@ -25,7 +32,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var viewModel: SimulatorViewModel
     lateinit var dexter: DexterBuilder
 
 
@@ -38,7 +45,14 @@ class MainActivity : AppCompatActivity() {
         //Landscape mode
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
-
+        //  Activar el Bluetooth
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivity(intent)
+            }
+        }
+        //  Solicitud de permiso Bluetooth
         val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
         if (bluetoothAdapter == null) {
             // Device doesn't support Bluetooth
@@ -50,50 +64,24 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
             }
         }
-
-        binding.btnLineal?.setOnClickListener {
-            if(checkPermission()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    if (!Environment.isExternalStorageManager()) {
-                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                        startActivity(intent)
-                    }
+        //  Solicitud de permiso Storage
+        if(checkPermission()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (!Environment.isExternalStorageManager()) {
+                    val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                    startActivity(intent)
                 }
-                val intent = Intent(this, SimulatorActivity::class.java)
-                intent.putExtra("CASO", "1")
-                startActivity(intent)
             }
         }
 
-        binding.btnExponencial?.setOnClickListener {
-            if(checkPermission()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    if (!Environment.isExternalStorageManager()) {
-                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                        startActivity(intent)
-                    }
-                }
-                val intent = Intent(this, SimulatorActivity::class.java)
-                intent.putExtra("CASO", "2")
-                startActivity(intent)
-            }
+        //  Agregar los fragmentos
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add<StatFragment>(R.id.FrameStat)
+            add<SpeedFragment>(R.id.FrameSpeed)
+            add<ChallengeFragment>(R.id.FrameChallenge)
+            add<BarFragment>(R.id.FrameBar)
         }
-
-        binding.btnAsintotica?.setOnClickListener {
-            if(checkPermission()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    if (!Environment.isExternalStorageManager()) {
-                        val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                        startActivity(intent)
-                    }
-                }
-                val intent = Intent(this, SimulatorActivity::class.java)
-                intent.putExtra("CASO", "3")
-                startActivity(intent)
-            }
-        }
-
-
 
     }
 
@@ -139,4 +127,5 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
+
 }

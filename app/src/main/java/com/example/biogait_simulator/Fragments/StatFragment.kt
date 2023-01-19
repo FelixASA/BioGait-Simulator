@@ -126,6 +126,7 @@ class StatFragment : Fragment() {
                         FileOutputStream(path + "/" + fileName + timeStamp + ".csv", true)
                     var cadena: String =
                         getString(R.string.CSVContent, p, s, tiempoCSV, v, r, re, va)
+                    Log.i("REGISTRO", cadena)
                     fileOutputStream.write(cadena.toByteArray())
                 }catch (e: IOException){
                     e.printStackTrace()
@@ -139,8 +140,15 @@ class StatFragment : Fragment() {
                 binding.sesion20?.isEnabled = true
                 binding.min15?.isEnabled = true
                 binding.min2530?.isEnabled = true
+                binding.paciente1?.isEnabled = true
+                binding.paciente2?.isEnabled = true
+                binding.paciente3?.isEnabled = true
                 disableAll(viewModel)
                 flagFile = false
+                timerCalibrar.cancel()
+                binding.txtCalibracion?.text = timeStringFromLong(0)
+                // Resetear los valores del viemodel
+                resetVMValue()
             }
 
         }
@@ -173,7 +181,6 @@ class StatFragment : Fragment() {
         })
 
         viewModel.paciente.observe(viewLifecycleOwner, Observer { p->
-            binding.txtPaciente?.text = p.toString()
             this.algoritmo = p
             this.p = p
         })
@@ -209,17 +216,22 @@ class StatFragment : Fragment() {
             }
         })
 
-        viewModel.close.observe(viewLifecycleOwner, Observer { c ->
-            if(c){
-                stopTimer()
-            }
-        })
-
         viewModel.lastChange.observe(viewLifecycleOwner, Observer { lc ->
             this.lastChange = lc
         })
 
         //--------------------------------------------UI--------------------------------------------------------------
+        //  Cambio de paciente
+        binding.pacienteGroup?.setOnCheckedChangeListener { radioGroup, i ->
+            if(R.id.paciente1 == i){
+                viewModel.setPaciente(1)
+            }else if (R.id.paciente2 == i){
+                viewModel.setPaciente(2)
+            }else if (R.id.paciente3 == i){
+                viewModel.setPaciente(3)
+            }
+        }
+
         //  Cambio de sesion
         binding.sesionGroup?.setOnCheckedChangeListener { radioGroup, i ->
             if(R.id.sesion1 == i){
@@ -245,6 +257,10 @@ class StatFragment : Fragment() {
             binding.sesion20?.isEnabled = false
             binding.min15?.isEnabled = false
             binding.min2530?.isEnabled = false
+            binding.paciente1?.isEnabled = false
+            binding.paciente2?.isEnabled = false
+            binding.paciente3?.isEnabled = false
+            viewModel.setClose(false)
 
             //  Crear archivo csv
             fileFolder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),"BioGaitSimulator")
@@ -360,10 +376,10 @@ class StatFragment : Fragment() {
 
     //  Envia el mensaje bluetooth de acuerdo a la sesion de simulacion
     private fun enviarMsg(): String{
-        var reto = 0 //Reto :: 1 = mariposa, 2 = globos, 3 = mascota, 0 = desabilitado
+        //Reto :: 1 = mariposa, 2 = globos, 3 = mascota, 0 = desabilitado
         var escenario = 3 //  alto = 3,   alto normal = 2, normal = 1
         var mensaje = ""
-        //  Aberracion de codigo
+        //  Aberracion de codigo (mappeo de los escenarios para el video)
         when(this.p){
             1 ->{
                 when(this.s){
@@ -441,13 +457,6 @@ class StatFragment : Fragment() {
         return mensaje
     }
 
-    //  Sirve para detener los dos timers
-    private fun stopTimer(){
-        flagFile = false
-        timerSimular.cancel()
-        timerCalibrar.cancel()
-    }
-
     //  Obtener variabilidad
     private fun getVariability(tiempo: Long): Double {
         Log.i("TIEMPO", tiempo.toString())
@@ -480,6 +489,16 @@ class StatFragment : Fragment() {
         return this.va
     }
 
-
+    //  reseteamos todos los valores del viewmodel
+    private fun resetVMValue(){
+        viewModel.setSesion(true)
+        viewModel.setMinuto(true)
+        viewModel.setUI(false)
+        viewModel.setChallenge(0)
+        viewModel.setAudio(false)
+        viewModel.setSpeed(0)
+        viewModel.setVariability(0.00)
+        viewModel.setClose(true)
+    }
 
 }

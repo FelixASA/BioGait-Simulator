@@ -67,5 +67,11 @@ class SpeedFragment : Fragment() {
             binding.barSpeed?.isEnabled = ui
         })
 
+        viewModel.speed.observe(viewLifecycleOwner, Observer{ sp ->
+            vSpeed = sp
+            binding.txtSpeed?.text = getString(R.string.vSpeed, vSpeed)
+            binding.barSpeed?.progress = vSpeed
+        })
+
     }
 }

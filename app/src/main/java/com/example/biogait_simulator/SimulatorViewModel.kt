@@ -11,11 +11,11 @@ class SimulatorViewModel : ViewModel() {
     private var _challenge = MutableLiveData<Int>() // Reto :: 1 = mariposa, 2 = globos, 3 = mascota, 0 = desabilitado
     private var _speed = MutableLiveData<Int>().apply { value = 0 } // Refleja el cambio de velocidad ingresado por el usuario
     private var _audio = MutableLiveData<Boolean>() // On/Off del audio feedback
-    private var _paciente = MutableLiveData<Int>() // paciente 1, 2, 3
+    private var _paciente = MutableLiveData<Int>().apply { value = 1 } // paciente 1, 2, 3
     private var _sesion = MutableLiveData<Boolean>().apply { value = true } // True = sesion1, False = sesion20
     private var _minuto = MutableLiveData<Boolean>().apply { value = true } // True = 1-5, False = 25-30
     private var _ui = MutableLiveData<Boolean>().apply { value = false } // On/Off imageButons
-    private var _close = MutableLiveData<Boolean>().apply { false }
+    private var _close = MutableLiveData<Boolean>().apply { false } //  Reset
 
     val paciente: LiveData<Int> = _paciente
     val variability: LiveData<Double> = _variability

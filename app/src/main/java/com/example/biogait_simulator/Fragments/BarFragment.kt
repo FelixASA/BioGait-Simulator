@@ -101,6 +101,18 @@ class BarFragment : Fragment() {
             }
 
         })
+
+        //  Reset
+        viewModel.close.observe(viewLifecycleOwner, Observer { c ->
+            if(c){
+                binding.vVelocidad?.text = "0.00"
+                binding.barVelocidad?.progress = 0
+                binding.vReto?.text = "0.00"
+                binding.barReto?.progress = 0
+                binding.vAudio?.text = "0.00"
+                binding.barAudio?.progress = 0
+            }
+        })
     }
 }
 
