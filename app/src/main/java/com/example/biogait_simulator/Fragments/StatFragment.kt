@@ -491,8 +491,6 @@ class StatFragment : Fragment() {
 
     //  reseteamos todos los valores del viewmodel
     private fun resetVMValue(){
-        viewModel.setSesion(true)
-        viewModel.setMinuto(true)
         viewModel.setUI(false)
         viewModel.setChallenge(0)
         viewModel.setAudio(false)
