@@ -1,26 +1,19 @@
 package com.example.biogait_simulator.Fragments
 
 
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
-import android.content.Context
-import android.content.Intent
+
 import android.os.*
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.biogait_simulator.Bluetooth.BluetoothService
+import com.example.biogait_simulator.Components.InputDialog
 import com.example.biogait_simulator.R
 import com.example.biogait_simulator.SimulatorViewModel
+import com.example.biogait_simulator.TpcSocket.TcpClient
 import com.example.biogait_simulator.databinding.FragmentStatBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -48,7 +41,7 @@ class StatFragment : Fragment() {
     private val tiempoMin25_30:Long = 1800000   //  Para sesion1
     private val tiempoMin571_575:Long = 34500000 //  Para sesion20
     private val tiempoMin595_600:Long = 36000000 //  Para sesion20
-    private val tiempoCalibracion:Long = 60000 // 1 minuto
+    private val tiempoCalibracion:Long = 15000 // 0.25 minuto
     private val tiempoRegresivo:Long = 150000 // 2.5 minutos
     private var sesion:Boolean = true // true = sesion1 , false = sesion20
     private var minuto:Boolean = true // true = inicios , false = finales
@@ -77,13 +70,8 @@ class StatFragment : Fragment() {
     private var re:Int = 0  //  audio feedback
     private var va:Double = 0.00   //  variabilidad
 
-    //  Para Bluetooth
-    val STATE_LISTENING: Int = 1
-    val STATE_CONNECTED: Int = 3
-    val STATE_DISCONNECTED: Int = 4
-    lateinit var bluetoothAdapter: BluetoothAdapter
-    lateinit var bluetoothManager: BluetoothManager
-    var sendReceive: BluetoothService.SendReceive?=null
+    //  Para TCP Socket
+    lateinit var cliente: TcpClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +92,6 @@ class StatFragment : Fragment() {
         binding.txtTiempo?.text = timeStringFromLong(0)
 
         viewModel = ViewModelProvider(requireActivity()).get(SimulatorViewModel::class.java)
-
 
         //--------------------------------TIMERS-----------------------------------------------------------------
 
@@ -197,11 +184,13 @@ class StatFragment : Fragment() {
 
         viewModel.challenge.observe(viewLifecycleOwner, Observer { ch ->
             this.r = ch
-            //  Solo funciona si tiene el bluetooth
-            try {
-                sendReceive?.write(enviarMsg().toByteArray())
-            }catch (e: IOException){
-                e.printStackTrace()
+            //  Enviamos un mensaje sobre el cambio de reto
+            if(cliente!=null) {
+                try {
+                    cliente.sendMessage(enviarMsg().toByteArray())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
             //  cambio de variabilidad
             viewModel.setVariability((getVariability(TimeUnit.MILLISECONDS.toSeconds(tiempo))))
@@ -248,6 +237,19 @@ class StatFragment : Fragment() {
             }else if (R.id.min25_30 == i){
                 viewModel.setMinuto(false)
             }
+        }
+
+        //  Conectar al servidor
+        binding.btnPc?.setOnClickListener{
+            InputDialog(
+                onSubmitClickListener = {
+                    ip,port ->
+                    if(ip!=null && port!=null){
+                        connectPC(ip,port)
+                    }
+                    //Log.i("DATOS_PC", ip+" "+port.toString())
+                }
+            ).show(parentFragmentManager, "DIALOG")
         }
 
         //  Boton para inicial la simulacion
@@ -300,32 +302,6 @@ class StatFragment : Fragment() {
 
         //  Desabilitamos los botones
         disableAll(viewModel)
-
-        //  Bluetooth
-        try {
-            bluetoothManager =
-                requireContext().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-            bluetoothAdapter = bluetoothManager.adapter
-
-            val serverClass =
-                BluetoothService(adapter = bluetoothAdapter, mHandler = mhandler).ServerClass()
-            serverClass.start()
-        }catch (e : IOException){
-            e.printStackTrace()
-            Log.i("ERROR", "No se pudo abrir el servidor Bluetooth")
-        }
-    }
-
-    //  Handler para Bluetooth
-    private val mhandler: Handler = object : Handler(Looper.getMainLooper()){
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            when(msg.what){
-                STATE_LISTENING ->{ binding.txtBluetooth?.text = "Bluetooth: Listening"}
-                STATE_CONNECTED ->{ binding.txtBluetooth?.text = "Bluetooth: Connected"}
-                STATE_DISCONNECTED -> {binding.txtBluetooth?.text = "Bluetooth: Disconnected"}
-            }
-        }
     }
 
     //  Funcion de auto formato de tiempo
@@ -497,6 +473,15 @@ class StatFragment : Fragment() {
         viewModel.setSpeed(0)
         viewModel.setVariability(0.00)
         viewModel.setClose(true)
+    }
+
+    //  Conectar al servidor con socket
+    private fun connectPC(ip:String, port:Int){
+        if(this::cliente.isInitialized){
+            this.cliente.close()
+        }
+        this.cliente = TcpClient(ip, port)
+        this.cliente.start()
     }
 
 }
